@@ -17,9 +17,9 @@ Set `compressed` to `True` to subscribe to a compressed image_transport.
 ### Parameters
 | Parameter       | Default      | Description                        |
 |-----------------|--------------|------------------------------------|
-| `input/topics`  | `/image_raw` | ROS2 Topic to subscribe            |
+| `input/topic`   | `/image_raw` | ROS2 Topic to subscribe            |
 | `output/path`   | `/tmp/`      | Path where to store the PNG files. |
-| `output/prefix` |              | Text to prepend to the output file |
+| `output/prefix` | `image-`     | Text to prepend to the output file |
 
 ## BAG To Image
 
