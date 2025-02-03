@@ -27,6 +27,7 @@
  */
 
 #include "bag_to_image/bag_to_image.hpp"
+
 #include <boost/format.hpp>
 
 BagToImage::BagToImage(const rclcpp::NodeOptions &options) :
@@ -98,7 +99,7 @@ void BagToImage::ReadBag() {
         target_topic_name = target_topic_name.substr(1);
       }
       target_topic_name = std::regex_replace(target_topic_name, std::regex("/"), "_");
-      const std::string fname = (boost::format("%s/%s/%09d.%09d.png") %
+      const std::string fname = (boost::format("%s/%s/%d.%09d.png") %
               output_path_ %
               target_topic_name %
               image_msg->header.stamp.sec %

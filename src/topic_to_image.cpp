@@ -28,6 +28,8 @@
 
 #include "topic_to_image/topic_to_image.hpp"
 
+#include <boost/format.hpp>
+
 TopicToImage::TopicToImage(const rclcpp::NodeOptions & options) :
   Node("topic_to_image", options)
 {
@@ -53,7 +55,7 @@ TopicToImage::TopicToImage(const rclcpp::NodeOptions & options) :
     rclcpp::shutdown(nullptr, "Invalid Output Path");
   }
   if (!std::filesystem::exists(output_path_)) {
-    RCLCPP_INFO_STREAM(get_logger(), "The Provided path [" << output_path_ << "]doesn't exist. Trying to create.");
+    RCLCPP_INFO_STREAM(get_logger(), "The Provided path [" << output_path_ << "] doesn't exist. Trying to create.");
     if (std::filesystem::create_directories(output_path_)){
       RCLCPP_INFO_STREAM(get_logger(), "The Provided Path was created successfully.");
     }
@@ -67,10 +69,11 @@ TopicToImage::TopicToImage(const rclcpp::NodeOptions & options) :
 
 void TopicToImage::ImageCallback(const sensor_msgs::msg::Image::ConstSharedPtr & image_msg)
 {
-  std::string fname;
-  fname = output_path_ + "/" + file_prefix_ + "_" +
-      boost::lexical_cast<std::string>(image_msg->header.stamp.sec) + "."+
-          boost::lexical_cast<std::string>(image_msg->header.stamp.nanosec) + ".png";
+  const std::string fname = (boost::format("%s/%s%d.%09d.png") %
+          output_path_ %
+          file_prefix_ %
+          image_msg->header.stamp.sec %
+          image_msg->header.stamp.nanosec).str();
 
   cv_bridge::CvImagePtr in_image_ptr;
   try {
